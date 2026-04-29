@@ -1,0 +1,31 @@
+{% extends 'lions/base.html' %}
+
+{% block content %}
+<h2>아기사자 등록</h2>
+<p style="font-size:13px; color:#888; margin-bottom:20px;">
+    등록 시 기초/중급/심화 과제와 프로필이 자동 생성됩니다. (@transaction.atomic)
+</p>
+
+<div class="card" style="max-width:480px;">
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">이름</label>
+            <input type="text" id="name" name="name" placeholder="아기사자 이름" required>
+        </div>
+        <div class="form-group">
+            <label for="track">트랙</label>
+            <select id="track" name="track" required>
+                <option value="">-- 트랙 선택 --</option>
+                {% for value, label in track_choices %}
+                <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div style="display:flex; gap:8px; margin-top:8px;">
+            <button type="submit" class="btn btn-primary">등록</button>
+            <a href="{% url 'lion_list' %}" class="btn">취소</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

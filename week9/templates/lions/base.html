@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦁 아기사자 관리 서비스</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #333; }
+        header { background: #fff; border-bottom: 1px solid #ddd; padding: 12px 24px; display: flex; align-items: center; gap: 16px; }
+        header h1 { font-size: 18px; }
+        header nav a { margin-left: 16px; text-decoration: none; color: #555; font-size: 14px; }
+        header nav a:hover { color: #000; }
+        main { max-width: 900px; margin: 32px auto; padding: 0 24px; }
+        h2 { font-size: 22px; margin-bottom: 20px; }
+        h3 { font-size: 16px; margin-bottom: 12px; color: #555; }
+        hr { border: none; border-top: 1px solid #e0e0e0; margin: 24px 0; }
+
+        /* 카드 */
+        .card { background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 16px; }
+
+        /* 버튼 */
+        .btn { display: inline-block; padding: 7px 14px; border-radius: 5px; font-size: 13px; cursor: pointer; text-decoration: none; border: 1px solid #ccc; background: #fff; color: #333; }
+        .btn:hover { background: #f0f0f0; }
+        .btn-primary { background: #3b82f6; color: #fff; border-color: #3b82f6; }
+        .btn-primary:hover { background: #2563eb; }
+        .btn-danger { background: #ef4444; color: #fff; border-color: #ef4444; }
+        .btn-danger:hover { background: #dc2626; }
+        .btn-success { background: #22c55e; color: #fff; border-color: #22c55e; }
+        .btn-success:hover { background: #16a34a; }
+        .btn-sm { padding: 4px 10px; font-size: 12px; }
+
+        /* 폼 */
+        .form-group { margin-bottom: 16px; }
+        label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #444; }
+        input[type=text], input[type=url], textarea, select {
+            width: 100%; padding: 8px 12px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px;
+        }
+        textarea { min-height: 80px; resize: vertical; }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: #3b82f6; }
+
+        /* 태그 배지 */
+        .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; margin: 2px; background: #e0e7ff; color: #3730a3; }
+        .badge-gray { background: #f3f4f6; color: #6b7280; }
+
+        /* 과제 목록 */
+        .task-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
+        .task-item:last-child { border-bottom: none; }
+        .task-item.completed span { text-decoration: line-through; color: #aaa; }
+        .task-count { font-size: 13px; color: #6b7280; margin-bottom: 12px; }
+
+        /* 목록 테이블 */
+        .lion-grid { display: grid; gap: 12px; }
+        .lion-row { background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; }
+        .lion-row:hover { border-color: #3b82f6; }
+        .lion-name { font-weight: 600; font-size: 15px; }
+        .lion-meta { font-size: 13px; color: #888; margin-top: 2px; }
+        .lion-actions { display: flex; gap: 8px; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>🦁 아기사자 관리 서비스</h1>
+    <nav>
+        <a href="{% url 'lion_list' %}">목록</a>
+        <a href="{% url 'lion_create' %}">+ 등록</a>
+        <a href="{% url 'tag_list' %}">태그 관리</a>
+    </nav>
+</header>
+<main>
+    {% block content %}{% endblock %}
+</main>
+</body>
+</html>

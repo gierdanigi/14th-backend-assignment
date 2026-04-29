@@ -1,0 +1,94 @@
+{% extends 'lions/base.html' %}
+
+{% block content %}
+<!-- ── 아기사자 기본 정보 ── -->
+<div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+    <h2>아기사자 상세</h2>
+    <div style="display:flex;gap:8px;">
+        <a href="{% url 'lion_edit' lion.pk %}" class="btn btn-sm">수정</a>
+        <a href="{% url 'lion_delete' lion.pk %}" class="btn btn-sm btn-danger">삭제</a>
+    </div>
+</div>
+
+<div class="card">
+    <ul style="list-style:disc; padding-left:20px; line-height:2;">
+        <li>이름: {{ lion.name }}</li>
+        <li>트랙: {{ lion.track }}</li>
+        <li>등록일: {{ lion.created_at|date:"Y-m-d H:i" }}</li>
+    </ul>
+</div>
+
+<hr>
+
+<!-- ── 성장 과제 (1:N) ── -->
+<h3>성장 과제</h3>
+<div class="card">
+    <div class="task-count">
+        전체 {{ task_count }}개 &nbsp;/&nbsp; 미완료 {{ incomplete_tasks.count }}개
+    </div>
+    {% for task in tasks %}
+    <div class="task-item {% if task.completed %}completed{% endif %}">
+        <span style="flex:1;">{{ task.title }}</span>
+        <span style="font-size:12px; color:#888;">
+            {% if task.completed %}✅ 완료{% else %}⬜ 미완료{% endif %}
+        </span>
+        <form method="post" action="{% url 'task_toggle' task.pk %}" style="margin:0;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm">
+                {% if task.completed %}되돌리기{% else %}완료{% endif %}
+            </button>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+
+<hr>
+
+<!-- ── 프로필 (1:1) ── -->
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+    <h3 style="margin-bottom:0;">프로필</h3>
+    <a href="{% url 'profile_edit' lion.pk %}" class="btn btn-sm">프로필 수정</a>
+</div>
+<div class="card">
+    <ul style="list-style:disc; padding-left:20px; line-height:2;">
+        <li>GitHub: {% if profile.github_url %}<a href="{{ profile.github_url }}" target="_blank">{{ profile.github_url }}</a>{% else %}<span style="color:#aaa;">미입력</span>{% endif %}</li>
+        <li>자기소개: {% if profile.bio %}{{ profile.bio }}{% else %}<span style="color:#aaa;">미입력</span>{% endif %}</li>
+    </ul>
+</div>
+
+<hr>
+
+<!-- ── 태그 (N:M) ── -->
+<h3>태그</h3>
+<div class="card">
+    <div style="margin-bottom:12px;">
+        <strong style="font-size:13px; color:#555;">보유 태그</strong><br><br>
+        {% for tag in lion_tags %}
+            <span class="badge">{{ tag.name }}</span>
+        {% empty %}
+            <span style="color:#aaa; font-size:13px;">태그 없음</span>
+        {% endfor %}
+    </div>
+
+    <hr style="margin:16px 0;">
+
+    <div>
+        <strong style="font-size:13px; color:#555;">태그 추가/제거</strong><br>
+        <p style="font-size:12px; color:#888; margin: 6px 0 12px;">클릭 시 토글 (파란색 = 보유 중)</p>
+        {% for tag in all_tags %}
+        <form method="post" action="{% url 'tag_toggle' lion.pk tag.pk %}" style="display:inline; margin:2px;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm {% if tag in lion_tags %}btn-primary{% endif %}">
+                {{ tag.name }}
+            </button>
+        </form>
+        {% empty %}
+            <span style="color:#aaa; font-size:13px;">등록된 태그 없음 — <a href="{% url 'tag_create' %}">태그 만들기</a></span>
+        {% endfor %}
+    </div>
+</div>
+
+<hr>
+
+<a href="{% url 'lion_list' %}" class="btn">← 목록으로</a>
+{% endblock %}

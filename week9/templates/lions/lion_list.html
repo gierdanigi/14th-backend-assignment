@@ -1,0 +1,40 @@
+{% extends 'lions/base.html' %}
+
+{% block content %}
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+    <h2>아기사자 목록</h2>
+    <a href="{% url 'lion_create' %}" class="btn btn-primary">+ 아기사자 등록</a>
+</div>
+
+{% if lions %}
+<div class="lion-grid">
+    {% for lion in lions %}
+    <div class="lion-row">
+        <div>
+            <div class="lion-name">{{ lion.name }}</div>
+            <div class="lion-meta">
+                트랙: {{ lion.track }} &nbsp;|&nbsp;
+                과제: {{ lion.tasks.count }}개 &nbsp;|&nbsp;
+                등록일: {{ lion.created_at|date:"Y-m-d" }}
+            </div>
+            <div style="margin-top:6px;">
+                {% for tag in lion.tags.all %}
+                    <span class="badge">{{ tag.name }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="lion-actions">
+            <a href="{% url 'lion_detail' lion.pk %}" class="btn btn-sm">상세</a>
+            <a href="{% url 'lion_edit' lion.pk %}" class="btn btn-sm">수정</a>
+            <a href="{% url 'lion_delete' lion.pk %}" class="btn btn-sm btn-danger">삭제</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="card" style="text-align:center; color:#888; padding:48px;">
+    등록된 아기사자가 없습니다.<br><br>
+    <a href="{% url 'lion_create' %}" class="btn btn-primary">첫 번째 아기사자 등록하기</a>
+</div>
+{% endif %}
+{% endblock %}

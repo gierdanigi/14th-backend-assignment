@@ -1,0 +1,27 @@
+{% extends 'lions/base.html' %}
+
+{% block content %}
+<h2>프로필 수정 — {{ lion.name }}</h2>
+<p style="font-size:13px; color:#888; margin-bottom:20px;">
+    get_or_create로 안전하게 조회/생성 (1:1 관계)
+</p>
+
+<div class="card" style="max-width:480px;">
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="github_url">GitHub 주소</label>
+            <input type="url" id="github_url" name="github_url"
+                   value="{{ profile.github_url }}" placeholder="https://github.com/username">
+        </div>
+        <div class="form-group">
+            <label for="bio">자기소개</label>
+            <textarea id="bio" name="bio" placeholder="자기소개를 입력하세요">{{ profile.bio }}</textarea>
+        </div>
+        <div style="display:flex; gap:8px; margin-top:8px;">
+            <button type="submit" class="btn btn-primary">저장</button>
+            <a href="{% url 'lion_detail' lion.pk %}" class="btn">취소</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
